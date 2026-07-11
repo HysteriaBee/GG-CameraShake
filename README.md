@@ -30,21 +30,24 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
 ### Setup
 
 1. Require the module
-```local Shaker = require(path.to.GGCameraShaker)```
+```luau
+local Shaker = require(path.to.GGCameraShaker)```
 Done.
 
 ### Using Presets
 
 It is incredibly simple to use this module with presets. All it takes is one line.
 
-```Shaker.Shake(Shaker.Presets.Explosion3D())```
+```luau
+Shaker.Shake(Shaker.Presets.Explosion3D())```
 
 ### Without Presets
 
 Simply create a preset in the CameraShakePresets module! You can choose from (#presets) and just fill in whatever's necessary! Take a look at current presets if you're stuck.
 Otherwise, just require one of three modules: `PerlinShake, BounceShake, or KickShake` and do as seen below (Details on these shake types are here: #perlinshake, #bounceshake, #kickshake):
 
-```Shaker.Shake(PerlinShake.New(...fill in the parameters!...))```
+```luau
+Shaker.Shake(PerlinShake.New(...fill in the parameters!...))```
 
 ## Presets
 
