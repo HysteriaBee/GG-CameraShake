@@ -52,6 +52,7 @@ Otherwise, just require one of three modules: `PerlinShake, BounceShake, or Kick
 Shaker.Shake(PerlinShake.New(...fill in the parameters!...))
 ```
 
+
 ## Presets
 
 __ShortShake3D__  
@@ -174,6 +175,7 @@ Creates an instance of KickShake in the direction from the source to the camera.
 
  For more details on `attenuation` see [Spatial Attenuation](#spatial-attenuation).
 
+
  ## Time Envelope
 Class `Envelope` controls amplitude of the shake over time. It can work in two modes. In automatic mode it plays the shake ones with selected `maxAmplitude`. 
 
@@ -193,6 +195,7 @@ local function Vibrate(amplitude: number)
 end
 ```
 
+
 ### EnvelopeParams
 [See interactive demonstration.](https://www.desmos.com/calculator/e9wxr78uu2)
 | Parameter        | Description | 
@@ -206,6 +209,7 @@ end
 
 Class `Attenuator` provides methods for changing strength and direction of the shake depending on position of the shake source relative to the camera.
 
+
 ### StrengthAttenuationParams
 [See interactive demonstration.](https://www.desmos.com/calculator/iivcfrotk8)
 | Parameter        | Description | 
@@ -214,6 +218,7 @@ Class `Attenuator` provides methods for changing strength and direction of the s
 | falloffScale     | How fast strength falls with distance. |
 | falloffDegree     | Power of the falloff function. |
 | axesMultiplier     | Contribution of each axis to distance. E. g. (1, 1, 0) for a 2D game in XY plane. |
+
 
 ## Writing Custom Shakes
 `CameraShaker` works with any class that implements `ICameraShake` interface. 
