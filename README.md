@@ -1,4 +1,4 @@
-# GG CameraShake
+# GG Camera Shake
 A port of gasgiant's [camerashake](https://github.com/gasgiant/Camera-Shake) from Unity for Roblox/Luau. Strictly typed.
 
 __Features__:
