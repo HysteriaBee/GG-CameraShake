@@ -24,6 +24,13 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
 2. [BounceShake](#bounceshake)
 2. [KickShake](#kickshake)
 
+## Installation
+
+1. [![.rbxm](https://img.shields.io/github/v/release/HysteriaBee/GG-CameraShake)](https://github.com/HysteriaBee/GG-CameraShake/releases/latest)
+
+2. [Wally](https://www.youtube.com/watch?v=QDia3e12czc) Coming soon, lol
+
+3. Roblox Creator Store unavailable, as I am unable to upload it there (I do not meet the requirements).
 
 
 ## Usage
