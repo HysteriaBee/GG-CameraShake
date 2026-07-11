@@ -31,7 +31,8 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
 
 1. Require the module
 ```luau
-local Shaker = require(path.to.GGCameraShaker)```
+local Shaker = require(path.to.GGCameraShaker)
+```
 Done.
 
 ### Using Presets
@@ -39,7 +40,8 @@ Done.
 It is incredibly simple to use this module with presets. All it takes is one line.
 
 ```luau
-Shaker.Shake(Shaker.Presets.Explosion3D())```
+Shaker.Shake(Shaker.Presets.Explosion3D())
+```
 
 ### Without Presets
 
@@ -47,7 +49,8 @@ Simply create a preset in the CameraShakePresets module! You can choose from (#p
 Otherwise, just require one of three modules: `PerlinShake, BounceShake, or KickShake` and do as seen below (Details on these shake types are here: #perlinshake, #bounceshake, #kickshake):
 
 ```luau
-Shaker.Shake(PerlinShake.New(...fill in the parameters!...))```
+Shaker.Shake(PerlinShake.New(...fill in the parameters!...))
+```
 
 ## Presets
 
@@ -228,8 +231,8 @@ export type ICameraShake = {
 	
 	-- CameraShaker calls this every frame on active shakes.
 	Update: (self: any, deltaTime: number, cameraCFrame: CFrame) -> ()
-}```
-
+}
+```
 Here is an example of a basic custom shake.
 
 ```luau
