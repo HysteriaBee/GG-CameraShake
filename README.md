@@ -136,6 +136,16 @@ Suitable for longer and stronger shakes in 2D. Moves camera in X and Y axes and 
 | rotationStrength     | Strength of rotation in Z axis.|
 | duration     | Duration of the shake.|
 
+__GunFire3D__  
+Suitable for gun recoil. Rotates camera in two axes: vertical, and horizontal. Uses `KickShake` algorithm.
+| Parameter        | Description | 
+| :------------- |:-------------|
+| verticalStrength     | Strength of rotation in X axis.|
+| horizontalStrength     | Strength of rotation in Y axis.|
+| attack     | Duration of the recoil attack.|
+| recover     | Duration for camera to return to normal.|
+
+
 ## PerlinShake
 `PerlinShake` combines layers of Perlin noise with different frequencies to create smooth and nuanced shake. Works better for longer shakes. For very short shakes consider using `BounceShake`.
 ### Constructor
@@ -284,7 +294,10 @@ export type ICameraShake = {
 	Initialize: (self: any, cameraCFrame: CFrame) -> (),
 	
 	-- CameraShaker calls this every frame on active shakes.
-	Update: (self: any, deltaTime: number, cameraCFrame: CFrame) -> ()
+	Update: (self: any, deltaTime: number, cameraCFrame: CFrame) -> (),
+
+	-- Bypasses IsEnabled = false for the camera shaker.
+	ForceEnabled: boolean?,
 }
 ```
 Here is an example of a basic custom shake.
