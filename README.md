@@ -1,5 +1,5 @@
 # GG Camera Shake
-A port of gasgiant's [camera shake](https://github.com/gasgiant/Camera-Shake) from Unity for Roblox/Luau. Strictly typed.
+A port of GasGiant's [camera shake](https://github.com/gasgiant/Camera-Shake) from Unity for Roblox/Luau. Strictly typed.
 
 __Features__:
 * One line of code shake with presets
@@ -8,7 +8,7 @@ __Features__:
 position of the shake source
 * Easy to write custom shakes
 
-[__Watch gasgiant's video!__](https://youtu.be/fn3hIPLbSn8)
+[__Watch GasGiant's video!__](https://youtu.be/fn3hIPLbSn8)
 ![Thumbnail](https://i.imgur.com/n0ndQ9x.png "Video thumbnail")
 
 Most of the info below is taken from gasgiant's repo, as well... this is literally his module ported to Luau. All of the references are their updated Luau counterparts.
