@@ -31,7 +31,10 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
 
 1. Get the .rbxm file above.
 
-2. [Wally](https://www.youtube.com/watch?v=QDia3e12czc) Coming soon, lol
+2. Wally
+```
+GG-CameraShake = "hysteriabee/gg-camerashake@1.0.1"
+```
 
 3. Roblox Creator Store unavailable, as I am unable to upload it there (I do not meet the requirements).
 
