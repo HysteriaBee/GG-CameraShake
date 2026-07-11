@@ -11,7 +11,7 @@ position of the shake source
 [__Watch gasgiant's video!__](https://youtu.be/fn3hIPLbSn8)
 ![Thumbnail](https://i.imgur.com/n0ndQ9x.png "Video thumbnail")
 
-Most of the info below is taken from gasgiant's repo, as well... this is literally his module ported to Luau.
+Most of the info below is taken from gasgiant's repo, as well... this is literally his module ported to Luau. All of the references are their updated Luau counterparts.
 
 ## Table of Contents
 1. [Installation](#installation)
@@ -36,12 +36,14 @@ Done.
 ### Using Presets
 
 It is incredibly simple to use this module with presets. All it takes is one line.
+
 ```Shaker.Shake(Shaker.Presets.Explosion3D())```
 
 ### Without Presets
 
 Simply create a preset in the CameraShakePresets module! You can choose from (#presets) and just fill in whatever's necessary! Take a look at current presets if you're stuck.
 Otherwise, just require one of three modules: `PerlinShake, BounceShake, or KickShake` and do as seen below (Details on these shake types are here: #perlinshake, #bounceshake, #kickshake):
+
 ```Shaker.Shake(PerlinShake.New(...fill in the parameters!...))```
 
 ## Presets
@@ -170,24 +172,19 @@ Creates an instance of KickShake in the direction from the source to the camera.
 Class `Envelope` controls amplitude of the shake over time. It can work in two modes. In automatic mode it plays the shake ones with selected `maxAmplitude`. 
 
 In manual mode you can keep the reference to the `PerlinShake` and change amplitude whenever you like.
-```csharp
-public class Vibrator : MonoBehaviour
-{
-    [SerializeField]
-    PerlinShake.Params params;
-    PerlinShake shake;
+```luau
+local PerlinShake = require(path.to.GGCameraShaker.PerlinShake)
+local params = PerlinShake.GetDefaultParams()
+params...--your params here, or pass through nothing in PerlinShake.New() if you want the default params.
 
-    private void Start()
-    {
-        shake = new PerlinShake(params);
-        CameraShaker.Shake(shake);
-    }
+local function Start()
+	shake = PerlinShake.New(params);
+	CameraShaker.Shake(shake);
+end
 
-    public void Vibrate(float amplitude)
-    {
-        shake.AmplitudeController.SetTargetAmplitude(amplitude);
-    }
-}
+local function Vibrate(amplitude: number)
+	shake.AmplitudeController:SetTargetAmplitude(amplitude);
+end
 ```
 
 ### EnvelopeParams
@@ -214,6 +211,7 @@ Class `Attenuator` provides methods for changing strength and direction of the s
 
 ## Writing Custom Shakes
 `CameraShaker` works with any class that implements `ICameraShake` interface. 
+
 ```luau 
 export type ICameraShake = {
 	-- Represents current position and rotation of the camera according to the shake.
@@ -228,3 +226,43 @@ export type ICameraShake = {
 	-- CameraShaker calls this every frame on active shakes.
 	Update: (self: any, deltaTime: number, cameraCFrame: CFrame) -> ()
 }```
+
+Here is an example of a basic custom shake.
+
+```luau
+local Displacement = require(path.to.GGCameraShaker.Displacement)
+type Displacement = Displacement.Displacement
+
+local EEEMANEEE72SHAKER = {}
+EEEMANEEE72SHAKER.__index = EEEMANEEE72SHAKER
+
+export type EEEMANEEE72SHAKER = {
+	time: number,
+	intensity: number,
+	duration: duration,
+	IsFinished: boolean,
+	CurrentDisplacement: Displacement,
+} & typeof(EEEMANEEE72SHAKER)
+
+function EEEMANEEE72SHAKER.New(intensity: number, duration: number): EEEMANEEE72SHAKER
+	local self = setmetatable({}, EEEMANEEE72SHAKER) :: EEEMANEEE72SHAKER
+
+	self.intensity = intensity or 1 -- default 1 if nothing is passed through
+	self.duration = duration or 1
+
+	return self
+end
+
+function EEEMANEEE72.Initialize(self: EEEMANEEE72SHAKER, cameraCFrame: CFrame)
+end
+
+function EEEMANEEE72.Update(self: EEEMANEEE72SHAKER, deltaTime: number, cameraCFrame: CFrame)
+	self.time += deltaTime
+	if time > duration then
+		self.IsFinished = true
+	end
+	CurrentDisplacement = Displacement.New(Vector3.new(bro idk some random value using like getrandominsideunitcircle) * intensity, Vector3.zero)
+	print("Greetings, you are at the end. Again, all thanks to gasgiant, none of this would've been possible without his original code. Darklizarditsmeagain stinks.")
+end
+```
+
