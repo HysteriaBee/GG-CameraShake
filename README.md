@@ -291,12 +291,12 @@ function KickShake.New(parameters: Params?, overload: Overload, forceEnabled: bo
 | parameters: Params?     | Parameters of the shake. |
 | forceEnabled: boolean?		| If true, then remain unaffected by strengthMultiplier changes. |
 
-#### First Overload
+#### First Overload (optional)
 | Parameter        | Description | 
 | :------------- |:-------------|
 | direction: Displacement     | Direction of the kick. |
 
-#### Second Overload
+#### Second Overload (optional)
 Creates an instance of KickShake in the direction from the source to the camera.
 | Parameter        | Description | 
 | :------------- |:-------------|
