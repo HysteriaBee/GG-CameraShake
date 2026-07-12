@@ -33,7 +33,7 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
 
 2. Wally
 ```
-GG-CameraShake = "hysteriabee/gg-camerashake@1.1.2"
+GG-CameraShake = "hysteriabee/gg-camerashake@*"
 ```
 
 3. Roblox Creator Store unavailable, as I am unable to upload it there (I do not meet the requirements).
