@@ -19,34 +19,36 @@ Most of the info below is taken from gasgiant's repo, as well... this is literal
     * [Setup](#setup)
     * [Using Presets](#using-presets)
     * [Without Presets](#without-presets)
-	* [Handling Offset](#guns/handling-offset)
+	* [Handling Offset](#handling-offset)
+  	* [List of the Functions](#functions)
 2. [Presets](#presets)
 2. [PerlinShake](#perlinshake)
 2. [BounceShake](#bounceshake)
 2. [KickShake](#kickshake)
+2. [Displacement](#displacement)
+2. [Time Envelope](#time-envelope)
+2. [Spatial Attenuation](#spatial-attenuation)
+2. [Writing Custom Shakes](#writing-custom-shakes)
 
 ## Installation
 
-[![.rbxm](https://img.shields.io/github/v/release/HysteriaBee/GG-CameraShake)](https://github.com/HysteriaBee/GG-CameraShake/releases/latest)
-
-1. Get the .rbxm file above.
-
-2. Wally
+**Wally**
 ```
 GG-CameraShake = "hysteriabee/gg-camerashake@*"
 ```
 
-3. Roblox Creator Store unavailable, as I am unable to upload it there (I do not meet the requirements).
+**Get the latest release** ([.rbxm](https://github.com/HysteriaBee/GG-CameraShake/releases/latest)).
+
+Since I am not ID-verified, I cannot make this public on the Roblox creator store.
 
 
 ## Usage
 ### Setup
 
-1. Require the module
+Require the module
 ```luau
 local Shaker = require(path.to.GGCameraShaker)
 ```
-Done.
 
 ### Using Presets
 
@@ -62,6 +64,7 @@ Simply create a preset in the CameraShakePresets module! You can choose from (#p
 Otherwise, just require one of three modules: `PerlinShake, BounceShake, or KickShake` and do as seen below (Details on these shake types are here: #perlinshake, #bounceshake, #kickshake):
 
 ```luau
+local PerlinShake = require(path.to.GGCameraShaker.PerlinShake) -- the shake algorithm of your choice
 Shaker.Shake(PerlinShake.New(...fill in the parameters!...))
 ```
 
@@ -80,8 +83,10 @@ raycastParams.IgnoreWater = true
 local function RayCast()
 	local mouse = UserInputService:GetMouseLocation()
 	local ray = game.Workspace.CurrentCamera:ViewportPointToRay(mouse.X, mouse.Y)
+
+	-- Main focus --
 	local offset = Shaker.GetOffset() -- Getting offset
-	local correctedRay = offset:VectorToWorldSpace(ray.Direction) * 1000 -- Main thing to focus on
+	local correctedRay = offset:VectorToWorldSpace(ray.Direction) * 1000 -- Applying that offset to correct the raycast
 	
 	local result = workspace:Raycast(ray.Origin, correctedRay, raycastParams)
 
@@ -101,6 +106,33 @@ local CameraCFrame = workspace.CurrentCamera.CFrame
 local CorrectedCFrame = CameraCFrame * Shaker.GetOffset()
 ```
 
+## Functions
+
+```luau
+-- Shakes the camera with the passed through shake instance (created with the .New() constructor).
+function CameraShaker.Shake(shake: ICameraShake)
+```
+
+```luau
+-- Set the strength scale of all shakes. Preferred over enable/disable methods. This allows for more fine tuned customization.
+function CameraShaker.SetStrengthScale(scale: number)
+```
+
+```luau
+-- Enables the shaker if it was disabled. Equivalent to SetStrengthScale(1).
+function CameraShaker.Enable()
+```
+
+```luau
+-- Disables the shaker if it was enabled. Equivalent to SetStrengthScale(0).
+function CameraShaker.Disable()
+```
+
+```luau
+-- Returns the camera offset produced by the camera shaker. See #handling-offset for more details.
+function CameraShaker.GetOffset(): CFrame
+```
+
 
 ## Presets
 
@@ -108,98 +140,140 @@ __ShortShake3D__
 Suitable for short and snappy shakes in 3D. Rotates camera in all three axes. Uses `BounceShake` algorithm.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| strength     | Strength of the shake.|
-| freq     | Frequency of shaking.|
-| numBounces     | Number of vibrations before stop.|
+| strength: number?     | Strength of the shake.|
+| freq: number?     | Frequency of shaking.|
+| numBounces: number?     | Number of vibrations before stop.|
+
+```luau
+function CameraShakePresets.ShortShake3D(strength: number?, freq: number?, numBounces: number?): BounceShake
+```
+
+---
 
 __ShortShake2D__  
 Suitable for short and snappy shakes in 2D. Moves camera in X and Y axes and rotates it in Z axis. Uses `BounceShake` algorithm.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| positionStrength     | Strength of motion in X and Y axes.|
-| rotationStrength     | Strength of rotation in Z axis.|
-| freq     | Frequency of shaking.|
-| numBounces     | Number of vibrations before stop.|
+| positionStrength: number?     | Strength of motion in X and Y axes.|
+| rotationStrength : number?    | Strength of rotation in Z axis.|
+| freq: number?     | Frequency of shaking.|
+| numBounces: number?     | Number of vibrations before stop.|
+
+```luau
+function CameraShakePresets.ShortShake2D(positionStrength: number?, rotationStrength: number?, freq: number?, numBounces: number?): BounceShake
+```
+
+---
 
 __Explosion3D__  
 Suitable for longer and stronger shakes in 3D. Rotates camera in all three axes. Uses `PerlinShake` algorithm.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| strength     | Strength of the shake.|
-| duration     | Duration of the shake.|
+| strength: number?     | Strength of the shake.|
+| duration: number?     | Duration of the shake.|
+
+```luau
+function CameraShakePresets.Explosion3D(strength: number?, duration: number?, sourcePosition: Vector3?): PerlinShake
+```
+
+---
 
 __Explosion2D__  
 Suitable for longer and stronger shakes in 2D. Moves camera in X and Y axes and rotates it in Z axis. Uses `PerlinShake` algorithm.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| positionStrength     | Strength of motion in X and Y axes.|
-| rotationStrength     | Strength of rotation in Z axis.|
-| duration     | Duration of the shake.|
+| positionStrength: number?     | Strength of motion in X and Y axes.|
+| rotationStrength: number?     | Strength of rotation in Z axis.|
+| duration: number?     | Duration of the shake.|
+
+```luau
+function CameraShakePresets.Explosion2D(positionStrength: number?, rotationStrength: number?, duration: number?): PerlinShake
+```
+
+---
 
 __GunFire3D__  
 Suitable for gun recoil. Rotates camera in two axes: vertical, and horizontal. Uses `KickShake` algorithm.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| verticalStrength     | Strength of rotation in X axis.|
-| horizontalStrength     | Strength of rotation in Y axis.|
-| attack     | Duration of the recoil attack.|
-| recover     | Duration for camera to return to normal.|
+| verticalStrength: number     | Strength of rotation in X axis.|
+| horizontalStrength: number     | Strength of rotation in Y axis.|
+| attack: number     | Duration of the recoil attack.|
+| recover: number     | Duration for camera to return to normal.|
+| forceEnabled: boolean?     | If enabled then it is unaffected by strengthMultiplier changes (enabled by default for fair play reasons).|
 
+```luau
+function CameraShakePresets.GunFire3D(strength: {verticalStrength: number, horizontalStrength: number}?, duration: {attack: number, recover: number}?, forceEnabled: boolean?): KickShake
+```
+
+---
 
 ## PerlinShake
 `PerlinShake` combines layers of Perlin noise with different frequencies to create smooth and nuanced shake. Works better for longer shakes. For very short shakes consider using `BounceShake`.
 ### Constructor
 
+```luau
+function PerlinShake.New(parameters: Params?, maxAmplitude: number?, sourcePosition: Vector3?, manualStrengthControl: boolean?, forceEnabled: boolean?): PerlinShake
+```
+
 | Parameter        |   |  Description | 
 | :------------- |:-------------|:-------------|
-| parameters     | | Parameters of the shake. |
-| maxAmplitude     | | Maximum amplitude of the shake.|
-| sourcePosition | | World position of the source of the shake. |
-| manualStrengthControl| false | Play shake once automatically. |
+| parameters: Params?     | | Parameters of the shake. |
+| maxAmplitude: number?     | | Maximum amplitude of the shake.|
+| sourcePosition: Vector3?		| | World position of the source of the shake. |
+| manualStrengthControl: boolean?		| false | Play shake once automatically. |
 |  | true| Manually control strength over time. |
+| forceEnabled: boolean? | | If true, then remain unaffected by strengthMultiplier changes. |
 
 For more details on `maxAmplitude` and `manualStrengthControl` see [Time Envelope](#time-envelope).
 
 ### Params
 
+```luau
+function PerlinShake.GetDefaultParams(): Params
+```
+
 | Parameter        | Description | 
 | :------------- |:-------------|
-| strength     | Strength of the shake for each axis. |
-| noiseModes     | Layers of Perlin noise with different frequencies. |
-| envelope     | Strength of the shake over time. |
-| attenuation     | How strength falls with distance from the shake source. |
+| strength: Displacement     | Strength of the shake for each axis. |
+| noiseModes: {{freq: number, amplitude: number}}     | Layers of Perlin noise with different frequencies. |
+| envelope: EnvelopeParams     | Strength of the shake over time. |
+| attenuation: StrengthAttenuationParams     | How strength falls with distance from the shake source. |
 
 For more details on `envelope` see [Time Envelope](#time-envelope). For more details on `attenuation` see [Spatial Attenuation](#spatial-attenuation).
 
 ## BounceShake
 `BounceShake` is useful for short and precise shakes. Unlike `PerlinShake`, it will provide reliable shake strength. Consider using `PerlinShake` for longer and stronger shakes.
 
-### Constructors
+### Constructor
 
-#### BounceShake (first overload)
+```luau
+function BounceShake.New(parameters: Params?, initialDirection: Displacement?, sourcePosition: Vector3?, forceEnabled: boolean?): BounceShake
+```
+
+#### BounceShake
 | Parameter        | Description | 
 | :------------- |:-------------|
-| parameters     | Parameters of the shake. |
-| initialDirection     | Initial direction of the shake motion. |
-| sourcePosition     | World position of the source of the shake. |
-
-#### BounceShake (second overload)
-Creates `BounceShake` with random initial direction.
-| Parameter        | Description | 
-| :------------- |:-------------|
-| parameters     | Parameters of the shake. |
-| sourcePosition     | World position of the source of the shake. |
+| parameters: Params?     | Parameters of the shake. |
+| initialDirection: Displacement?     | Initial direction of the shake motion. |
+| sourcePosition: Vector3?     | World position of the source of the shake. |
+| forceEnabled: boolean?		| If true, then remain unaffected by strengthMultiplier changes. |
 
 ### Params
+
+```luau
+function BounceShake.GetDefaultParams(): Params
+```
+
 | Parameter        | Description | 
 | :------------- |:-------------|
-| positionStrength     | Parameters of the shake. |
-| rotationStrength     | Strength of the shake for rotational axes. |
-| axesMultiplier     | Preferred direction of shaking. |
-| freq     | Frequency of shaking. |
-| numBounces     | Number of vibrations before stop. |
-| randomness     | Randomness of motion. |
-| attenuation     | How strength falls with distance from the shake source. |
+| positionStrength: number     | Parameters of the shake. |
+| rotationStrength: number     | Strength of the shake for rotational axes. |
+| axesMultiplier: Displacement     | Preferred direction of shaking. |
+| freq: number     | Frequency of shaking. |
+| numBounces: number     | Number of vibrations before stop. |
+| randomness: number     | Randomness of motion. |
+| attenuation: StrengthAttenuationParams     | How strength falls with distance from the shake source. |
 
  For more details on `attenuation` see [Spatial Attenuation](#spatial-attenuation).
 
@@ -208,61 +282,110 @@ Makes one kick in specified direction. Useful for recoil.
 
 ### Constructors
 
-#### KickShake (first overload)
+```luau
+function KickShake.New(parameters: Params?, overload: Overload, forceEnabled: boolean?): KickShake
+```
+
+### KickShake
 | Parameter        | Description | 
 | :------------- |:-------------|
-| parameters     | Parameters of the shake. |
-| direction     | Direction of the kick. |
+| parameters: Params?     | Parameters of the shake. |
+| forceEnabled: boolean?		| If true, then remain unaffected by strengthMultiplier changes. |
 
-#### KickShake (second overload)
+#### First Overload
+| Parameter        | Description | 
+| :------------- |:-------------|
+| direction: Displacement     | Direction of the kick. |
+
+#### Second Overload
 Creates an instance of KickShake in the direction from the source to the camera.
 | Parameter        | Description | 
 | :------------- |:-------------|
-| parameters     | Parameters of the shake. |
-| sourcePosition     | World position of the source of the shake. |
-| attenuateStrength     | Change strength depending on distance from the camera? |
+| sourcePosition: Vector3     | World position of the source of the shake. |
+| attenuateStrength: boolean     | Change strength depending on distance from the camera? |
 
 ### Params
+
+```luau
+type AnimationCurve = (t: number) -> number
+function KickShake.GetDefaultParams(): Params
+```
+
 | Parameter        | Description | 
 | :------------- |:-------------|
-| strength     | Strength of the shake for each axis. |
-| attackTime     | How long it takes to move forward. |
-| attackCurve     | Forward motion curve. |
-| releaseTime     | How long it takes to move back. |
-| releaseCurve     | Back motion curve. |
-| attenuation     | How strength falls with distance from the shake source. |
+| strength: Displacement     | Strength of the shake for each axis. |
+| attackTime: number     | How long it takes to move forward. |
+| attackCurve: AnimationCurve    | Forward motion curve. |
+| releaseTime: number     | How long it takes to move back. |
+| releaseCurve: AnimationCurve     | Back motion curve. |
+| attenuation: StrengthAttenuationParams     | How strength falls with distance from the shake source. |
 
  For more details on `attenuation` see [Spatial Attenuation](#spatial-attenuation).
 
+ ## Displacement
+Class `Displacement` is composed of position and eulerAngle (both Vector3).
+
+```luau
+function Displacement.New(position: Vector3, eulerAngles: Vector3): Displacement
+```
 
  ## Time Envelope
 Class `Envelope` controls amplitude of the shake over time. It can work in two modes. In automatic mode it plays the shake ones with selected `maxAmplitude`. 
 
+```luau
+function Envelope.New(pars: EnvelopeParams, initialTargetAmplitude: number, controlMode: EnvelopeControlMode): Envelope
+```
+
+```luau
+--Set the target amplitude for an envelope.
+function Envelope.SetTargetAmplitude(self: Envelope, value: number)
+```
+
+```luau
+-- Set an envelope to finish.
+function Envelope.Finish(self: Envelope)
+```
+
+```luau
+-- Set an envelope to finish immediately.
+function Envelope.FinishImmediately(self: Envelope)
+```
+
 In manual mode you can keep the reference to the `PerlinShake` and change amplitude whenever you like.
 ```luau
+local Shaker = require(path.to.GGCameraShaker)
 local PerlinShake = require(path.to.GGCameraShaker.PerlinShake)
+local ICameraShake = require(path.to.ICameraShake)
+
 local params = PerlinShake.GetDefaultParams()
 params...--your params here, or pass through nothing in PerlinShake.New() if you want the default params.
 
+type ICameraShake = ICameraShake.ICameraShake
+
 local function Start()
 	shake = PerlinShake.New(params);
-	CameraShaker.Shake(shake);
+	Shaker.Shake(shake);
 end
 
-local function Vibrate(amplitude: number)
+local function Vibrate(shake: ICameraShake, amplitude: number)
 	shake.AmplitudeController:SetTargetAmplitude(amplitude);
 end
 ```
 
 
 ### EnvelopeParams
+
+```luau
+function Envelope.GetDefaultParams(): EnvelopeParams
+```
+
 [See interactive demonstration.](https://www.desmos.com/calculator/e9wxr78uu2)
 | Parameter        | Description | 
 | :------------- |:-------------|
-| attack     | How fast the amplitude increases. |
-| sustain     | How long in seconds the amplitude holds maximum value. |
-| decay     | How fast the amplitude decreases. |
-| degree     | Power in which the amplitude is raised to get intensity. |
+| attack: number     | How fast the amplitude increases. |
+| sustain: number     | How long in seconds the amplitude holds maximum value. |
+| decay: number     | How fast the amplitude decreases. |
+| degree: number     | Power in which the amplitude is raised to get intensity. |
 
 ## Spatial Attenuation
 
@@ -270,13 +393,18 @@ Class `Attenuator` provides methods for changing strength and direction of the s
 
 
 ### StrengthAttenuationParams
+
+```luau
+function Attenuator.GetDefaultParams(): StrengthAttenuationParams
+```
+
 [See interactive demonstration.](https://www.desmos.com/calculator/iivcfrotk8)
 | Parameter        | Description | 
 | :------------- |:-------------|
-| clippingDistance     | Radius in which shake doesn't lose strength. |
-| falloffScale     | How fast strength falls with distance. |
-| falloffDegree     | Power of the falloff function. |
-| axesMultiplier     | Contribution of each axis to distance. E. g. (1, 1, 0) for a 2D game in XY plane. |
+| clippingDistance: number     | Radius in which shake doesn't lose strength. |
+| falloffScale: number     | How fast strength falls with distance. |
+| falloffDegree: number     | Power of the falloff function. |
+| axesMultiplier: Vector3     | Contribution of each axis to distance. E. g. (1, 1, 0) for a 2D game in XY plane. |
 
 
 ## Writing Custom Shakes
