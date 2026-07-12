@@ -307,8 +307,11 @@ Creates an instance of KickShake in the direction from the source to the camera.
 ### Params
 
 ```luau
-type AnimationCurve = (t: number) -> number
 function KickShake.GetDefaultParams(): Params
+```
+
+```luau
+type AnimationCurve = (t: number) -> number
 ```
 
 | Parameter        | Description | 
