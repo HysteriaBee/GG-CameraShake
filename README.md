@@ -428,7 +428,7 @@ export type ICameraShake = {
 	-- CameraShaker calls this every frame on active shakes.
 	Update: (self: any, deltaTime: number, cameraCFrame: CFrame) -> (),
 
-	-- Bypasses IsEnabled = false for the camera shaker.
+	-- Instances with this enabled are uanffected by the strengthMultiplier in GGCameraShaker main.
 	ForceEnabled: boolean?,
 }
 ```
